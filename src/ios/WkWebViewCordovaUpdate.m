@@ -766,13 +766,27 @@ NSDictionary *MimeTypeMappings;
                                       filePath = [self replaceText:path withPattern:@"^/.*/Containers/Data/Application/[^/]+/Documents" withText:documentsFolder];
                                   } else {
                                       filePath = [self filePathForURI:path allowDirectory:NO];
-                                      
+
                                       BOOL isDir = NO;
-                                      
+
                                       // XXX HACKHACK if the file not found, return the root page
                                       if (!filePath || ![[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir] || isDir)
                                       {
-                                          filePath = [self filePathForURI:@"/" allowDirectory:NO];
+                                          if(filePath != NULL && !isDir) {
+                                              NSString *appPath = @"/app";
+                                              path = [appPath stringByAppendingString: path];
+                                              // If the file doesn't exist at the location, try in the app folder.
+                                              filePath = [self filePathForURI:path allowDirectory:NO];
+
+                                              // XXX HACKHACK if the file not found, return the root page
+                                              if (![[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir])
+                                              {
+                                                  filePath = [self filePathForURI:@"/" allowDirectory:NO];
+                                              }
+                                          }
+                                          else {
+                                              filePath = [self filePathForURI:@"/" allowDirectory:NO];
+                                          }
                                       }
                                  }
                                   
