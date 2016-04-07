@@ -510,7 +510,8 @@
 
   // Start timer which periodically checks whether the app is alive
 //  if ([self settingForKey:@"RecoverFromCrash"] && [[self settingForKey:@"RecoverFromCrash"] boolValue]) {
-    _crashRecoveryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(recoverFromCrash) userInfo:nil repeats:YES];
+    // PAYFRIENDZ: Disable crash recovery timer as it breaks session login after hot push
+    //_crashRecoveryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(recoverFromCrash) userInfo:nil repeats:YES];
 //  }
 }
 
